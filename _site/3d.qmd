@@ -1,0 +1,162 @@
+---
+title: "3d"
+format: html
+---
+
+```{r}
+# Load required libraries
+library(plotly)
+library(dplyr)
+
+# Set seed for reproducibility
+set.seed(123)
+
+# Generate data for 100 participants
+n <- 100
+
+# Create a data frame with normally distributed traits
+dark_triad <- data.frame(
+  Machiavellianism = rnorm(n, mean = 3, sd = 0.5),
+  Narcissism = rnorm(n, mean = 3, sd = 0.5),
+  Psychopathy = rnorm(n, mean = 3, sd = 0.5)
+)
+
+# Ensure all values are between 1 and 5
+dark_triad <- dark_triad %>%
+  mutate(across(everything(), ~ pmin(pmax(., 1), 5)))
+
+# Calculate medians
+medians <- sapply(dark_triad, median)
+
+# Create the 3D scatter plot
+p <- plot_ly(dark_triad, 
+        x = ~Machiavellianism, 
+        y = ~Narcissism, 
+        z = ~Psychopathy, 
+        type = "scatter3d", 
+        mode = "markers",
+        marker = list(size = 3,
+                      color = ~Machiavellianism + Narcissism + Psychopathy, 
+                      colorscale = "Viridis",
+                      opacity = 0.8)) %>%
+  layout(scene = list(xaxis = list(title = "Machiavellianism", range = c(1, 5)),
+                      yaxis = list(title = "Narcissism", range = c(1, 5)),
+                      zaxis = list(title = "Psychopathy", range = c(1, 5))),
+         title = "3D Scatter Plot of Dark Triad Traits with Median Planes")
+
+# Add median planes
+p <- p %>%
+  add_trace(x = rep(medians["Machiavellianism"], 4),
+            y = c(1, 1, 5, 5),
+            z = c(1, 5, 5, 1),
+            type = "scatter3d", mode = "lines",
+            line = list(color = "red", width = 5),
+            surfaceaxis = 0,
+            opacity = 0.3,
+            name = "Median Machiavellianism") %>%
+  add_trace(x = c(1, 1, 5, 5),
+            y = rep(medians["Narcissism"], 4),
+            z = c(1, 5, 5, 1),
+            type = "scatter3d", mode = "lines",
+            line = list(color = "green", width = 5),
+            surfaceaxis = 1,
+            opacity = 0.3,
+            name = "Median Narcissism") %>%
+  add_trace(x = c(1, 1, 5, 5),
+            y = c(1, 5, 5, 1),
+            z = rep(medians["Psychopathy"], 4),
+            type = "scatter3d", mode = "lines",
+            line = list(color = "blue", width = 5),
+            surfaceaxis = 2,
+            opacity = 0.3,
+            name = "Median Psychopathy")
+
+# Display the plot
+p
+```
+
+```{r}
+# Load required libraries
+library(plotly)
+library(dplyr)
+
+# Set seed for reproducibility
+set.seed(123)
+
+# Generate data for 100 participants
+n <- 100
+
+# Create a data frame with normally distributed traits
+dark_triad <- data.frame(
+  Machiavellianism = rnorm(n, mean = 3, sd = 0.5),
+  Narcissism = rnorm(n, mean = 3, sd = 0.5),
+  Psychopathy = rnorm(n, mean = 3, sd = 0.5)
+)
+
+# Ensure all values are between 1 and 5
+dark_triad <- dark_triad %>%
+  mutate(across(everything(), ~ pmin(pmax(., 1), 5)))
+
+# Calculate medians
+medians <- sapply(dark_triad, median)
+
+# Function to assign segment based on median splits
+assign_segment <- function(m, n, p) {
+  paste0(
+    ifelse(m >= medians["Machiavellianism"], "High", "Low"), " M, ",
+    ifelse(n >= medians["Narcissism"], "High", "Low"), " N, ",
+    ifelse(p >= medians["Psychopathy"], "High", "Low"), " P"
+  )
+}
+
+# Assign segment to each participant
+dark_triad$Segment <- with(dark_triad, assign_segment(Machiavellianism, Narcissism, Psychopathy))
+
+# Create the 3D scatter plot
+p <- plot_ly() %>%
+  add_trace(data = dark_triad,
+            x = ~Machiavellianism, 
+            y = ~Narcissism, 
+            z = ~Psychopathy, 
+            type = "scatter3d", 
+            mode = "markers",
+            color = ~Segment,
+            colors = c("red", "blue", "green", "purple", "orange", "pink", "cyan", "yellow"),
+            marker = list(size = 5),
+            text = ~paste("M:", round(Machiavellianism, 2), 
+                          "<br>N:", round(Narcissism, 2), 
+                          "<br>P:", round(Psychopathy, 2),
+                          "<br>Segment:", Segment),
+            hoverinfo = "text") %>%
+  layout(scene = list(xaxis = list(title = "Machiavellianism", range = c(1, 5)),
+                      yaxis = list(title = "Narcissism", range = c(1, 5)),
+                      zaxis = list(title = "Psychopathy", range = c(1, 5))),
+         title = "3D Scatter Plot of Dark Triad Traits (8 Segments)")
+
+# Add faint median planes
+p <- p %>%
+  add_trace(x = rep(medians["Machiavellianism"], 4),
+            y = c(1, 1, 5, 5),
+            z = c(1, 5, 5, 1),
+            type = "scatter3d", mode = "lines",
+            line = list(color = "gray", width = 1),
+            opacity = 0.1,
+            showlegend = FALSE) %>%
+  add_trace(x = c(1, 1, 5, 5),
+            y = rep(medians["Narcissism"], 4),
+            z = c(1, 5, 5, 1),
+            type = "scatter3d", mode = "lines",
+            line = list(color = "gray", width = 1),
+            opacity = 0.1,
+            showlegend = FALSE) %>%
+  add_trace(x = c(1, 1, 5, 5),
+            y = c(1, 5, 5, 1),
+            z = rep(medians["Psychopathy"], 4),
+            type = "scatter3d", mode = "lines",
+            line = list(color = "gray", width = 1),
+            opacity = 0.1,
+            showlegend = FALSE)
+
+# Display the plot
+p
+```

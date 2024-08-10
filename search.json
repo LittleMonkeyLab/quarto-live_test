@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "example.html",
+    "href": "example.html",
+    "title": "example",
+    "section": "",
+    "text": "Hint 1\n\n\n\n\n\nUse the cor() function to calculate the correlation between two variables.\ncorrelation &lt;- goldsmiths_students |&gt; \n  summarise(cor = cor(______, ______))\n\n\n\n\n\n\n\n\n\n\n\nHint 2\n\n\n\n\n\nThe cor() function takes two arguments: the variables you want to correlate.\ncorrelation &lt;- goldsmiths_students |&gt; \n  summarise(cor = cor(study_hours, exam_score))\n\n\n\n\n\n\n\n\n\n\n\nFully worked solution:\n\n\n\n\n\nCalculate the correlation between study hours and exam scores:\n# Calculate the correlation\ncorrelation &lt;- goldsmiths_students |&gt; \n  summarise(cor = cor(study_hours, exam_score)) |&gt; \n  pull(cor)\n\n# Create a scatter plot\nggplot(goldsmiths_students, aes(x = study_hours, y = exam_score)) +\n  geom_point() +\n  geom_smooth(method = \"lm\", se = FALSE, color = \"blue\") +\n  labs(title = \"Relationship between Study Hours and Exam Scores\",\n       subtitle = paste(\"Correlation:\", round(correlation, 2)),\n       x = \"Study Hours\",\n       y = \"Exam Score\")\n\n# Interpret the correlation\nif (correlation &gt; 0.7) {\n  print(\"There is a strong positive correlation between study hours and exam scores.\")\n} else if (correlation &gt; 0.3) {\n  print(\"There is a moderate positive correlation between study hours and exam scores.\")\n} else if (correlation &gt; 0) {\n  print(\"There is a weak positive correlation between study hours and exam scores.\")\n} else {\n  print(\"There is no positive correlation between study hours and exam scores.\")\n}\nThis solution calculates the correlation, creates a visualization, and provides an interpretation of the results."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Testing Exercise Functionality",
+    "section": "",
+    "text": "testing exercise functionality"
+  },
+  {
+    "objectID": "quarto-live_web.html",
+    "href": "quarto-live_web.html",
+    "title": "Quarto-live_website",
+    "section": "",
+    "text": "$ quarto add r-wasm/quarto-live"
+  },
+  {
+    "objectID": "quarto-live_web.html#read-only",
+    "href": "quarto-live_web.html#read-only",
+    "title": "Quarto-live_website",
+    "section": "Read Only",
+    "text": "Read Only"
+  },
+  {
+    "objectID": "quarto-live_web.html#read-only-without-autorun",
+    "href": "quarto-live_web.html#read-only-without-autorun",
+    "title": "Quarto-live_website",
+    "section": "Read Only without autorun",
+    "text": "Read Only without autorun"
+  },
+  {
+    "objectID": "quarto-live_web.html#immediate-execution",
+    "href": "quarto-live_web.html#immediate-execution",
+    "title": "Quarto-live_website",
+    "section": "Immediate execution",
+    "text": "Immediate execution\nSetting runbutton: false will remove the “Run Code” button from the editor UI. In this mode code is evaluated immediately as it is entered into the editor.\n\nSource"
+  },
+  {
+    "objectID": "quarto-live_web.html#autocomplete",
+    "href": "quarto-live_web.html#autocomplete",
+    "title": "Quarto-live_website",
+    "section": "Autocomplete",
+    "text": "Autocomplete\nAutocompletion code suggestions can be enabled with the code cell option completion: true.\n\nSource"
+  },
+  {
+    "objectID": "quarto-live_web.html#persistent-storage-in-browser",
+    "href": "quarto-live_web.html#persistent-storage-in-browser",
+    "title": "Quarto-live_website",
+    "section": "Persistent Storage in browser",
+    "text": "Persistent Storage in browser"
+  },
+  {
+    "objectID": "quarto-live_web.html#fill-in-the-blank-so-that-the-result-of-the-sum-is-10.",
+    "href": "quarto-live_web.html#fill-in-the-blank-so-that-the-result-of-the-sum-is-10.",
+    "title": "Quarto-live_website",
+    "section": "Fill in the blank so that the result of the sum is 10.",
+    "text": "Fill in the blank so that the result of the sum is 10.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFilter the starwars dataset so that only the droid characters are included.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHint 1\n\n\n\n\n\nConsider using the filter() function from dplyr.\nstarwars |&gt; filter(______)\n\n\n\n\n\n\n\n\n\n\n\nHint 2\n\n\n\n\n\nYou should filter the dataset using the species column.\nstarwars |&gt; filter(species == ______)\n\n\n\n\n\n\n\n\n\n\n\nFully worked solution:\n\n\n\n\n\nUse the filter() function from dplyr:\n1starwars |&gt;\n2    filter(species == \"Droid\")\n\n1\n\nTake the starwars dataset, and then,\n\n2\n\nFilter for the “Droid” species."
+  }
+]
